@@ -1,77 +1,245 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Roblox Cards Test Page</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      text-align: center;
-      padding: 30px;
-    }
-    h1 {
-      color: #cc0000;
-    }
-    .card {
-      display: inline-block;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      margin: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      width: 150px;
-      font-size: 20px;
-    }
-    input, button {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
-    }
-    .success {
-      color: green;
-      font-weight: bold;
-    }
-    .error {
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dubai Chocolate Contest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent scrollbar during initial animation */
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            width: 90%;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            opacity: 0; /* Initial state for smooth entrance */
+            transform: translateY(20px); /* Initial state for smooth entrance */
+            animation: fadeInSlideUp 1s forwards ease-out;
+        }
+
+        @keyframes fadeInSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .image-section {
+            flex: 1;
+            min-width: 400px; /* Adjust as needed */
+            background-color: #333; /* Fallback background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the area */
+            display: block;
+        }
+
+        .content-section {
+            flex: 1.2; /* Slightly larger for text */
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #333;
+            text-align: center;
+        }
+
+        .content-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            color: #8b4513; /* Chocolate brown */
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .content-section p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .input-group input[type="email"] {
+            width: calc(100% - 40px);
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input[type="email"]:focus {
+            outline: none;
+            border-color: #8b4513;
+        }
+
+        button {
+            background-color: #a0522d; /* Sienna */
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #8b4513; /* Darker chocolate */
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .popup-message {
+            margin-top: 25px;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #28a745; /* Green for success */
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            text-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+        }
+
+        .popup-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                width: 95%;
+            }
+            .image-section {
+                min-width: unset;
+                height: 300px; /* Fixed height for mobile image */
+            }
+            .content-section {
+                padding: 30px;
+            }
+            .content-section h1 {
+                font-size: 2.5em;
+            }
+            .content-section p {
+                font-size: 1em;
+            }
+            button {
+                padding: 12px 25px;
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .content-section h1 {
+                font-size: 2em;
+            }
+            .content-section p {
+                font-size: 0.9em;
+            }
+            .input-group input[type="email"] {
+                padding: 12px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="image-section">
+            <img src="http://googleusercontent.com/image_generation_content/0" alt="Magnificent Dubai Chocolate">
+        </div>
+        <div class="content-section">
+            <h1>Welcome to the Sweetest Contest!</h1>
+            <p>
+                Вы можете участвовать в конкурсе и выиграть 20 плиток великолепного дубайского шоколада, каждая по 100 грамм!
+                Это ваш шанс насладиться роскошным вкусом и поделиться им с близкими.
+                Не упустите эту уникальную возможность!
+            </p>
+            <div class="input-group">
+                <label for="email">Enter your Gmail address to participate:</label>
+                <input type="email" id="email" placeholder="your.email@gmail.com">
+            </div>
+            <button id="participateButton" disabled>Принять участие</button>
+            <div id="winChanceMessage" class="popup-message"></div>
+        </div>
+    </div>
 
-  <h1>Roblox Cards Test Page</h1>
+    <script>
+        const emailInput = document.getElementById('email');
+        const participateButton = document.getElementById('participateButton');
+        const winChanceMessage = document.getElementById('winChanceMessage');
 
-  <div>
-    <div class="card">💳 10 R$</div>
-    <div class="card">💳 25 R$</div>
-    <div class="card">💳 50 R$</div>
-    <div class="card">💳 100 R$</div>
-  </div>
+        // Function to validate Gmail address
+        function validateEmail() {
+            const email = emailInput.value;
+            // Simple regex for Gmail address ending with @gmail.com
+            const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (gmailRegex.test(email)) {
+                participateButton.disabled = false; // Enable button
+            } else {
+                participateButton.disabled = true; // Disable button
+            }
+        }
 
-  <h2>Введите код и никнейм</h2>
-  <input type="text" id="code" placeholder="Введите код">
-  <input type="text" id="username" placeholder="Введите ник">
-  <br>
-  <button onclick="checkCode()">Получить Robux</button>
+        // Add event listener for input changes
+        emailInput.addEventListener('keyup', validateEmail);
+        emailInput.addEventListener('change', validateEmail); // For paste events
 
-  <p id="message"></p>
+        // Add event listener for button click
+        participateButton.addEventListener('click', () => {
+            if (!participateButton.disabled) {
+                // Show the message smoothly
+                winChanceMessage.textContent = 'У вас 2% на выигрыш!';
+                winChanceMessage.classList.add('show');
 
-  <script>
-    function checkCode() {
-      const code = document.getElementById("code").value.trim();
-      const username = document.getElementById("username").value.trim();
-      const message = document.getElementById("message");
+                // Optionally, disable input/button after submission
+                emailInput.disabled = true;
+                participateButton.disabled = true;
+            }
+        });
 
-      if (code === "WerSerWeSe" && username !== "") {
-        message.className = "success";
-        message.textContent = `✅ Успех! Robux будут зачислены на ник "${username}" через 10-15 минут.`;
-      } else {
-        message.className = "error";
-        message.textContent = "❌ Неверный код или пустой никнейм.";
-      }
-    }
-  </script>
-
+        // Initial check in case of autofill
+        validateEmail();
+    </script>
 </body>
-</html>
+  </html>
