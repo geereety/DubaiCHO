@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Roblox Cards Test Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #cc0000;
+    }
+    .card {
+      display: inline-block;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      width: 150px;
+      font-size: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    .success {
+      color: green;
+      font-weight: bold;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Roblox Cards Test Page</h1>
+
+  <div>
+    <div class="card">💳 10 R$</div>
+    <div class="card">💳 25 R$</div>
+    <div class="card">💳 50 R$</div>
+    <div class="card">💳 100 R$</div>
+  </div>
+
+  <h2>Введите код и никнейм</h2>
+  <input type="text" id="code" placeholder="Введите код">
+  <input type="text" id="username" placeholder="Введите ник">
+  <br>
+  <button onclick="checkCode()">Получить Robux</button>
+
+  <p id="message"></p>
+
+  <script>
+    function checkCode() {
+      const code = document.getElementById("code").value.trim();
+      const username = document.getElementById("username").value.trim();
+      const message = document.getElementById("message");
+
+      if (code === "WerSerWeSe" && username !== "") {
+        message.className = "success";
+        message.textContent = `✅ Успех! Robux будут зачислены на ник "${username}" через 10-15 минут.`;
+      } else {
+        message.className = "error";
+        message.textContent = "❌ Неверный код или пустой никнейм.";
+      }
+    }
+  </script>
+
+</body>
+</html>
