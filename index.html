@@ -1,245 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dubai Chocolate Contest</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden; /* Prevent scrollbar during initial animation */
-        }
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { CheckCircle, Smartphone, Send } from "lucide-react";
+import Image from "next/image"; // Импорт компонента Image
 
-        .container {
-            display: flex;
-            max-width: 1200px;
-            width: 90%;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            opacity: 0; /* Initial state for smooth entrance */
-            transform: translateY(20px); /* Initial state for smooth entrance */
-            animation: fadeInSlideUp 1s forwards ease-out;
-        }
+export default function PhoneOrderWidget() {
+  const [step, setStep] = useState("select");
+  const [selectedPhone, setSelectedPhone] = useState(null);
+  const [address, setAddress] = useState("");
+  const [telegram, setTelegram] = useState("");
+  const [card, setCard] = useState("");
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
-        @keyframes fadeInSlideUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+  const phones = [
+    {
+      name: "Samsung Galaxy S24 Ultra",
+      img: "/images/samsung-s24ultra.jpg", // Путь к изображению
+      description: "Флагман от Samsung с лучшими камерами и стилусом.",
+      price: "1299 €",
+    },
+    {
+      name: "Samsung Galaxy A55",
+      img: "/images/samsung-a55.jpg", // Путь к изображению
+      description: "Качественный и стильный телефон по разумной цене.",
+      price: "399 €",
+    },
+  ];
 
-        .image-section {
-            flex: 1;
-            min-width: 400px; /* Adjust as needed */
-            background-color: #333; /* Fallback background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+  function handlePhoneSelect(phone) {
+    setSelectedPhone(phone);
+    setStep("address");
+  }
 
-        .image-section img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures the image covers the area */
-            display: block;
-        }
+  function handleAddressSubmit() {
+    if (address && telegram) {
+      setStep("payment");
+    } else {
+      alert("Пожалуйста, заполните все поля адреса и Telegram.");
+    }
+  }
 
-        .content-section {
-            flex: 1.2; /* Slightly larger for text */
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: #333;
-            text-align: center;
-        }
+  function handlePayment() {
+    setPaymentProcessing(true);
+    // Имитация задержки оплаты
+    setTimeout(() => {
+      setPaymentProcessing(false);
+      setPaymentSuccess(true);
+      setStep("confirmation");
+    }, 2000);
+  }
 
-        .content-section h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3em;
-            color: #8b4513; /* Chocolate brown */
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
+  return (
+    <div className="max-w-xl mx-auto p-4 space-y-6">
+      {step === "select" && (
+        <>
+          <h2 className="text-2xl font-bold text-center text-blue-700">Выберите ваш Samsung</h2>
+          <p className="text-center text-gray-600 mb-6">Найдите идеальный телефон для себя</p>
+          <div className="grid grid-cols-1 gap-6">
+            {phones.map((phone) => (
+              <Card key={phone.name} className="hover:shadow-xl transition-all duration-300 cursor-pointer border-blue-200" onClick={() => handlePhoneSelect(phone)}>
+                <CardContent className="flex gap-6 items-center p-6">
+                  {/* Использование Next.js Image компонента */}
+                  <Image src={phone.img} alt={phone.name} width={150} height={150} className="rounded-xl shadow-md object-cover" />
+                  <div>
+                    <h3 className="text-xl font-bold text-blue-800">{phone.name}</h3>
+                    <p className="text-sm text-gray-700 mt-1">{phone.description}</p>
+                    <p className="text-lg font-semibold text-green-600 mt-3">{phone.price}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </>
+      )}
 
-        .content-section p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            color: #555;
-        }
-
-        .input-group {
-            margin-bottom: 25px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1em;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .input-group input[type="email"] {
-            width: calc(100% - 40px);
-            padding: 15px 20px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-group input[type="email"]:focus {
-            outline: none;
-            border-color: #8b4513;
-        }
-
-        button {
-            background-color: #a0522d; /* Sienna */
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        button:hover:not(:disabled) {
-            background-color: #8b4513; /* Darker chocolate */
-            transform: translateY(-2px);
-        }
-
-        button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        .popup-message {
-            margin-top: 25px;
-            font-size: 1.3em;
-            font-weight: 700;
-            color: #28a745; /* Green for success */
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-            text-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
-        }
-
-        .popup-message.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 900px) {
-            .container {
-                flex-direction: column;
-                width: 95%;
-            }
-            .image-section {
-                min-width: unset;
-                height: 300px; /* Fixed height for mobile image */
-            }
-            .content-section {
-                padding: 30px;
-            }
-            .content-section h1 {
-                font-size: 2.5em;
-            }
-            .content-section p {
-                font-size: 1em;
-            }
-            button {
-                padding: 12px 25px;
-                font-size: 1.1em;
-            }
-        }
-
-        @media (max-width: 500px) {
-            .content-section h1 {
-                font-size: 2em;
-            }
-            .content-section p {
-                font-size: 0.9em;
-            }
-            .input-group input[type="email"] {
-                padding: 12px 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="image-section">
-            <img src="http://googleusercontent.com/image_generation_content/0" alt="Magnificent Dubai Chocolate">
+      {step === "address" && (
+        <div className="space-y-6 bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold text-center text-blue-700">Введите адрес доставки</h2>
+          <div className="space-y-4">
+            <Input
+              placeholder="Юзер Телеграм (например @user123)"
+              value={telegram}
+              onChange={(e) => setTelegram(e.target.value)}
+              className="border-blue-300 focus:border-blue-500"
+            />
+            <Input
+              placeholder="Адрес получателя (например, Россия, Москва, ул. Пушкина 10...)"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="border-blue-300 focus:border-blue-500"
+            />
+          </div>
+          <Button onClick={handleAddressSubmit} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300">
+            Продолжить <Send className="ml-2 h-4 w-4" />
+          </Button>
         </div>
-        <div class="content-section">
-            <h1>Welcome to the Sweetest Contest!</h1>
-            <p>
-                Вы можете участвовать в конкурсе и выиграть 20 плиток великолепного дубайского шоколада, каждая по 100 грамм!
-                Это ваш шанс насладиться роскошным вкусом и поделиться им с близкими.
-                Не упустите эту уникальную возможность!
-            </p>
-            <div class="input-group">
-                <label for="email">Enter your Gmail address to participate:</label>
-                <input type="email" id="email" placeholder="your.email@gmail.com">
+      )}
+
+      {step === "payment" && (
+        <div className="space-y-6 bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold text-center text-blue-700">Оплата</h2>
+          <Input
+            placeholder="Номер карты (можно ввести что угодно)"
+            value={card}
+            onChange={(e) => setCard(e.target.value)}
+            className="border-blue-300 focus:border-blue-500"
+            type="text" // Изменил тип на text, чтобы можно было вводить что угодно
+          />
+          <Button onClick={handlePayment} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300" disabled={paymentProcessing}>
+            {paymentProcessing ? "Обработка..." : "Оплатить"}
+          </Button>
+          {paymentSuccess && (
+            <div className="text-center mt-4">
+              <CheckCircle className="w-8 h-8 text-green-500 mx-auto animate-bounce" />
+              <p className="text-green-600 font-semibold">Оплата прошла успешно!</p>
             </div>
-            <button id="participateButton" disabled>Принять участие</button>
-            <div id="winChanceMessage" class="popup-message"></div>
+          )}
         </div>
+      )}
+
+      {step === "confirmation" && selectedPhone ? (
+        <div className="text-center space-y-6 bg-white p-8 rounded-lg shadow-xl border-t-4 border-green-500">
+          <CheckCircle className="w-16 h-16 text-green-500 mx-auto animate-pulse" />
+          <h2 className="text-3xl font-bold text-green-700">Заказ принят!</h2>
+          <p className="text-lg text-gray-800">
+            Ваш телефон <strong className="text-blue-600">{selectedPhone.name}</strong> будет отправлен по адресу:
+          </p>
+          <p className="italic text-gray-700 text-md p-2 bg-gray-100 rounded-md">{address}</p>
+          <div className="flex items-center justify-center gap-2 text-lg text-gray-800">
+            <Send className="w-6 h-6 text-blue-500" />
+            <p>В Telegram <strong className="text-blue-600">@{telegram}</strong> придёт сообщение с кодом и информацией о получении.</p>
+          </div>
+          <p className="text-sm text-gray-500 mt-6">Благодарим за покупку!</p>
+        </div>
+      ) : null}
     </div>
-
-    <script>
-        const emailInput = document.getElementById('email');
-        const participateButton = document.getElementById('participateButton');
-        const winChanceMessage = document.getElementById('winChanceMessage');
-
-        // Function to validate Gmail address
-        function validateEmail() {
-            const email = emailInput.value;
-            // Simple regex for Gmail address ending with @gmail.com
-            const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-            if (gmailRegex.test(email)) {
-                participateButton.disabled = false; // Enable button
-            } else {
-                participateButton.disabled = true; // Disable button
-            }
-        }
-
-        // Add event listener for input changes
-        emailInput.addEventListener('keyup', validateEmail);
-        emailInput.addEventListener('change', validateEmail); // For paste events
-
-        // Add event listener for button click
-        participateButton.addEventListener('click', () => {
-            if (!participateButton.disabled) {
-                // Show the message smoothly
-                winChanceMessage.textContent = 'У вас 2% на выигрыш!';
-                winChanceMessage.classList.add('show');
-
-                // Optionally, disable input/button after submission
-                emailInput.disabled = true;
-                participateButton.disabled = true;
-            }
-        });
-
-        // Initial check in case of autofill
-        validateEmail();
-    </script>
-</body>
-  </html>
+  );
+}
